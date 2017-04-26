@@ -5,10 +5,13 @@
  */
 package manejodevivero;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Luis Arevalo
  */
-public class Agregar_Venta {
+public class Agregar_Venta extends JFrame
+{
     
 }

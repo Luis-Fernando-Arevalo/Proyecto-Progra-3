@@ -20,12 +20,13 @@ public class Inventario_Especie extends JFrame
 {
     private JMenuBar barraMenu;
     private JMenu menuAgregar,menuModificar,menuMostrar;
+    private JButton btnAtras;
      
     public Inventario_Especie() {
         super();        
         configurarVentana();
-        inicializarComponentes();  
-//        initializeComponentAction();
+        inicializarComponentes(); 
+        initializeComponentAction();
     }    
     
     private void inicializarComponentes() {
@@ -34,7 +35,10 @@ public class Inventario_Especie extends JFrame
         menuAgregar = new JMenu ("Agregar");
         menuModificar = new JMenu ("Modificar");
         menuMostrar = new JMenu ("Historial");
+        btnAtras = new JButton ();
                                 
+        btnAtras.setText("Atras");
+        btnAtras.setBounds(50, 900, 100, 30);
                 
         // añade componentes a la ventana       
         this.add(barraMenu);
@@ -42,6 +46,7 @@ public class Inventario_Especie extends JFrame
         this.barraMenu.add(this.menuModificar);       
         this.barraMenu.add(this.menuMostrar);
         this.setJMenuBar(this.barraMenu);
+        this.add(btnAtras);
                 
     }
 
@@ -52,5 +57,15 @@ public class Inventario_Especie extends JFrame
         this.setLocationRelativeTo(null); // centered
         this.setLayout(null); // work frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
+    }
+    
+    private void initializeComponentAction() {
+                
+        btnAtras.addActionListener((ActionEvent ev) -> {
+            Ventana_Principal v = new Ventana_Principal();
+            v.setVisible(true);
+            this.setVisible(false);
+        });
+        
     }
 }

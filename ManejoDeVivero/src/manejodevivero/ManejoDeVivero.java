@@ -16,7 +16,7 @@ public class ManejoDeVivero {
      */
     public static void main(String[] args) 
     {
-        Ventana v = new Ventana ();        
+        Ventana_Principal v = new Ventana_Principal ();        
         v.setVisible(true);
     }
     
