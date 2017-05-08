@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package manejodevivero;
-
+import coneccionMSQL.Coneccion;
 /**
  *
  * @author Luis Arevalo
@@ -16,8 +16,11 @@ public class ManejoDeVivero {
      */
     public static void main(String[] args) 
     {
-        Ventana_Principal v = new Ventana_Principal ();        
-        v.setVisible(true);
+        Ventana_Principal v = new Ventana_Principal ();
+        Coneccion con = new Coneccion ();
+        con.coneccion();         
+        v.setVisible(true);                
+                
     }
     
 }
