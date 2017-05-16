@@ -7,18 +7,19 @@ package manejodevivero;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import AdministradorConexion.*;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Statement;
 
 /**
  *DefaultTableModelo datos = new DefaultTableModel();
@@ -27,14 +28,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Inventario_Especie extends JFrame
 {
+    private Coneccion con;
+    private Connection cn;
     private JTabbedPane barraMenu;
     private JPanel menuAgregar,menuModificar,menuBuscar;
     private JButton btnAtras, btnGuardar, btnLimpiar;
     private JLabel lblAgregar,lblPrecio,lblCantidad,lblCosto;
     private JTextField txtAgregar,txtPrecio, txtCantidad, txtCosto; 
-    private JTable tabla;
-    private DefaultTableModel datos;
-     
+    private JTable tablaPrincipal;
+    private DefaultTableModel tablaModelo;    
+    
     public Inventario_Especie() {
         super();        
         configurarVentana();
@@ -43,7 +46,10 @@ public class Inventario_Especie extends JFrame
     }    
     
     private void inicializarComponentes() {
-        // crea componentes               
+        
+        // crea componentes              
+        con = new Coneccion();
+        cn = con.conexion();
         barraMenu = new JTabbedPane();
         menuAgregar = new JPanel();
         menuModificar = new JPanel();
@@ -58,43 +64,27 @@ public class Inventario_Especie extends JFrame
         txtAgregar = new JTextField ();
         txtPrecio = new JTextField ();
         txtCantidad = new JTextField ();
-        txtCosto = new JTextField ();              
-        
-        datos = new DefaultTableModel( new String [5], ABORT);
-        tabla = new JTable (datos);
-        
+        txtCosto = new JTextField ();     
+        tablaPrincipal = new JTable ();
+        tablaModelo = new DefaultTableModel();
+                               
         menuAgregar.setLayout(null);
         menuBuscar.setLayout(null);
         //Elementos de Tab Buscar
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
-        new Object [][] {
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null}
-            },
-        new String [] {
-        "Especie", "Cantidad", "Precio", "Costo"
-         }
-        )); 
-        tabla.setBounds(30, 50, 510, 250);
+        tablaModelo.addColumn("Especie");
+        tablaModelo.addColumn("Cantidad");
+        tablaModelo.addColumn("Costo");
+        tablaPrincipal.setModel(tablaModelo);
+        String sql = "SELECT * FROM especie";
+        String datos[]=new String[3];
+//        Statement st = cn 
+        
+        tablaPrincipal.setBounds(30, 50, 510, 250);
         //Elementos de Tab Agregar
         barraMenu.addTab("Agregar", menuAgregar);
         barraMenu.addTab("Modificar", menuModificar);
         barraMenu.addTab("Buscar", menuBuscar);        
-        btnAtras.setIcon(new ImageIcon("/start/boton.jpg"));
+        btnAtras.setIcon(new ImageIcon("src/boton.jpg"));
         btnAtras.setBounds(0, 0, 30, 30);
         btnGuardar.setText("Guardar");
         btnGuardar.setBounds(60, 280, 100, 30);
@@ -129,7 +119,7 @@ public class Inventario_Especie extends JFrame
         menuAgregar.add(btnGuardar);
         menuAgregar.add(btnLimpiar);
         
-        menuBuscar.add(tabla);
+        menuBuscar.add(tablaPrincipal);
                         
         this.add(barraMenu);                
 
@@ -148,7 +138,7 @@ public class Inventario_Especie extends JFrame
         btnAtras.addActionListener((ActionEvent ev) -> {
             Ventana_Principal v = new Ventana_Principal();
             v.setVisible(true);
-            this.setVisible(false);
+            Inventario_Especie.this.setVisible(false);
         });
         
     }
