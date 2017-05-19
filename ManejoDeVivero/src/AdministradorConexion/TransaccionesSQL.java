@@ -16,7 +16,6 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  *
@@ -24,13 +23,14 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class TransaccionesSQL extends JFrame
 {
-    private JButton btnInsertar, btnLimpiar, btnModificar, btnActualizar;
+    private JButton btnInsertar, btnLimpiar, btnModificar, btnActualizar, btnEliminar;
     private Coneccion con;
     private Connection cn;
     private JTextField txtEspecie, txtCantidad, txtCosto,txtID;
     private JLabel lblEspecie, lblCantidad, lblCosto;
     private JTable tabla;
     private DefaultTableModel modelo;
+    private JScrollPane barra;
     
     public TransaccionesSQL() {
         super();        
@@ -42,7 +42,7 @@ public class TransaccionesSQL extends JFrame
     
     private void configurarVentana() {
         this.setTitle("Vivero La Bolivianita");
-        this.setSize(600, 600);
+        this.setSize(650, 600);
         //this.setExtendedState(MAXIMIZED_BOTH);
         this.setResizable(true);
         this.setLocationRelativeTo(null); // centered
@@ -65,6 +65,9 @@ public class TransaccionesSQL extends JFrame
         btnModificar = new JButton();
         btnActualizar = new JButton();
         txtID = new JTextField();
+        tabla = new JTable();
+        btnEliminar = new JButton ();
+        
                         
         // configurar componentes        
         btnInsertar.setText("Insertar");
@@ -75,6 +78,8 @@ public class TransaccionesSQL extends JFrame
         btnModificar.setBounds(260, 500, 100, 30);
         btnActualizar.setText("Actualizar");
         btnActualizar.setBounds(380, 500, 100, 30);
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setBounds(500,500,100,30);
         txtEspecie.setBounds(180, 350, 300, 30);
         txtCantidad.setBounds(180, 400, 300, 30);
         txtCosto.setBounds(180, 450, 300, 30);
@@ -84,7 +89,7 @@ public class TransaccionesSQL extends JFrame
         lblCantidad.setText("Cantidad");
         lblCantidad.setBounds(50, 400, 200, 30);
         lblCosto.setText("Costo");
-        lblCosto.setBounds(50, 450, 200, 30);
+        lblCosto.setBounds(50, 450, 200, 30);        
                                 
         // añade componentes a la ventana        
         this.add(btnInsertar);   
@@ -98,18 +103,17 @@ public class TransaccionesSQL extends JFrame
         this.add(btnModificar);
         this.add(btnActualizar);
         this.add(txtID);
+        this.add(btnEliminar);
     }
     
     private void mostrarTabla ()
-    {        
-        tabla = new JTable();
-        modelo = new DefaultTableModel();
-        JScrollPane Sp= new JScrollPane();
+    {                
+        modelo = new DefaultTableModel();        
         modelo.addColumn("ID_Especie");
         modelo.addColumn("Especie");
         modelo.addColumn("Cantidad");
-        modelo.addColumn("Costo");        
-        tabla.setModel(modelo);                   
+        modelo.addColumn("Costo");                
+       tabla.setModel(modelo);                   
         
         String sql = "SELECT * FROM especie";        
         
@@ -159,10 +163,13 @@ public class TransaccionesSQL extends JFrame
             }
             mostrarTabla();
             Limpiar();
-        });               
+        });          
+        
         btnLimpiar.addActionListener((ActionEvent ev) -> {
-            Limpiar();            
-        });         
+            Limpiar(); 
+            mostrarTabla();
+        });      
+        
         btnModificar.addActionListener((ActionEvent ev) -> {
             int fila = tabla.getSelectedRow();
             if (fila>=0) 
@@ -177,6 +184,7 @@ public class TransaccionesSQL extends JFrame
                 JOptionPane.showMessageDialog(null, "Fila no seleccionada");
             }
         });
+        
         btnActualizar.addActionListener((ActionEvent ev) -> {
             try {
                 PreparedStatement pps = cn.prepareStatement("UPDATE especie SET Nombre='"+txtEspecie.getText()+"',Cantidad='"+txtCantidad.getText()+"',Costo='"+txtCosto.getText()+"' WHERE idEspecie='"+txtID.getText()+"'");
@@ -186,7 +194,24 @@ public class TransaccionesSQL extends JFrame
             } catch (SQLException ex) {
                 Logger.getLogger(TransaccionesSQL.class.getName()).log(Level.SEVERE, null, ex);
             }
+            mostrarTabla();
         });   
+        
+        btnEliminar.addActionListener((ActionEvent ev) ->{
+            int fila = tabla.getSelectedRow();
+            String valor = tabla.getValueAt(fila, 0).toString();
+            if (fila>=0) 
+            {
+                try {
+                    PreparedStatement pps = cn.prepareStatement("DELETE FROM especie WHERE idEspecie='"+valor+"'");
+                    pps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Dato Eliminado");
+                } catch (SQLException ex) {
+                    Logger.getLogger(TransaccionesSQL.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                mostrarTabla();
+            }
+        });
         
     }
 }
