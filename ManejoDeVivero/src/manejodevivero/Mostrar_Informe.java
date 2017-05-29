@@ -7,7 +7,8 @@ package manejodevivero;
 
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,6 +17,11 @@ import javax.swing.JFrame;
 public class Mostrar_Informe extends JFrame
 {
     private JButton btnAtras;
+    private JTable tabla;
+    private JScrollPane scroll;
+    private DefaultTableModel modelo;
+    private JPanel panel;
+    
     
     public Mostrar_Informe() {
         super();        
@@ -26,8 +32,18 @@ public class Mostrar_Informe extends JFrame
     
     private void inicializarComponentes() {
         // crea componentes                       
-        btnAtras = new JButton ();
-                                
+        btnAtras = new JButton ();          
+        panel = new JPanel();
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Id_Especie");
+        modelo.addColumn("Especie");
+        modelo.addColumn("Ganancia Neta");
+        tabla = new JTable(modelo);
+        scroll = new JScrollPane (tabla);
+        scroll.setBounds(10,10,900,850);
+//        panel.add(scroll);
+        this.add(scroll);
+        
         btnAtras.setText("Atras");
         btnAtras.setBounds(50, 900, 100, 30);
                 
