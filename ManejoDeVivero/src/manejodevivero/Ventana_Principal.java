@@ -72,6 +72,13 @@ public class Ventana_Principal extends JFrame
             this.dispose();
         });
         
+        btnAgregar_Venta.addActionListener((e) -> 
+        {
+            Agregar_Venta ag = new Agregar_Venta();
+            ag.setVisible(true);
+            this.dispose();
+        });
+        
     }    
         
 }

@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TransaccionesSQL extends JFrame
 {
-    private JButton btnInsertar, btnLimpiar, btnModificar, btnActualizar, btnEliminar;
+    private JButton btnInsertar, btnLimpiar, btnModificar, btnGuardar, btnEliminar;
     private Coneccion con;
     private Connection cn;
     private JTextField txtEspecie, txtCantidad, txtCosto,txtID;
@@ -31,6 +31,7 @@ public class TransaccionesSQL extends JFrame
     private JTable tabla;
     private DefaultTableModel modelo;
     private JScrollPane barra;
+    private JPanel panel;
     
     public TransaccionesSQL() {
         super();        
@@ -63,7 +64,7 @@ public class TransaccionesSQL extends JFrame
         lblCosto = new JLabel ();
         btnLimpiar = new JButton();
         btnModificar = new JButton();
-        btnActualizar = new JButton();
+        btnGuardar = new JButton();
         txtID = new JTextField();
         tabla = new JTable();
         btnEliminar = new JButton ();
@@ -76,8 +77,8 @@ public class TransaccionesSQL extends JFrame
         btnLimpiar.setBounds(140,500,100,30);
         btnModificar.setText("Modificar");
         btnModificar.setBounds(260, 500, 100, 30);
-        btnActualizar.setText("Actualizar");
-        btnActualizar.setBounds(380, 500, 100, 30);
+        btnGuardar.setText("Guardar");
+        btnGuardar.setBounds(380, 500, 100, 30);
         btnEliminar.setText("Eliminar");
         btnEliminar.setBounds(500,500,100,30);
         txtEspecie.setBounds(180, 350, 300, 30);
@@ -101,20 +102,21 @@ public class TransaccionesSQL extends JFrame
         this.add(lblCosto);
         this.add(btnLimpiar);
         this.add(btnModificar);
-        this.add(btnActualizar);
+        this.add(btnGuardar);
         this.add(txtID);
         this.add(btnEliminar);
     }
     
     private void mostrarTabla ()
     {                
+        
         modelo = new DefaultTableModel();        
         modelo.addColumn("ID_Especie");
         modelo.addColumn("Especie");
         modelo.addColumn("Cantidad");
         modelo.addColumn("Costo");                
-       tabla.setModel(modelo);                   
-        
+        tabla.setModel(modelo);                   
+
         String sql = "SELECT * FROM especie";        
         
         String datos[]= new String [4];
@@ -185,7 +187,7 @@ public class TransaccionesSQL extends JFrame
             }
         });
         
-        btnActualizar.addActionListener((ActionEvent ev) -> {
+        btnGuardar.addActionListener((ActionEvent ev) -> {
             try {
                 PreparedStatement pps = cn.prepareStatement("UPDATE especie SET Nombre='"+txtEspecie.getText()+"',Cantidad='"+txtCantidad.getText()+"',Costo='"+txtCosto.getText()+"' WHERE idEspecie='"+txtID.getText()+"'");
                 pps.executeUpdate();

@@ -16,12 +16,12 @@ public class ManejoDeVivero {
      */
     public static void main(String[] args) 
     {
-//        Ventana_Principal v = new Ventana_Principal ();
+        Ventana_Principal v = new Ventana_Principal ();
 //        Coneccion con = new Coneccion ();
 //        con.conexion();         
-        TransaccionesSQL ejem = new TransaccionesSQL();
-        ejem.setVisible(true);
-//        v.setVisible(true);            
+//        TransaccionesSQL ejem = new TransaccionesSQL();
+//        ejem.setVisible(true);
+        v.setVisible(true);            
         
                 
     }
